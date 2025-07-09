@@ -40,4 +40,4 @@ pytest tests/ -v
 
 ## Лицензия:
 
-Проект распространяется под [лицензией MIT](https://github.com/nadezhdapopova-spec/client-banking-widget/blob/main/LICENSE)
+Проект распространяется под [лицензией MIT](LICENSE)
