@@ -1,7 +1,7 @@
-from src.models import Category
+from src.models import Category, Product
 
 
-def test_product_init(product_1, product_2) -> None:
+def test_product_init(product_1: Product, product_2: Product) -> None:
     assert product_1.name == "Xiaomi Redmi Note 11"
     assert product_1.price == 31000.0
 
@@ -10,7 +10,7 @@ def test_product_init(product_1, product_2) -> None:
     assert product_2.quantity == 5
 
 
-def test_category_init(category_1, category_2):
+def test_category_init(category_1: Category, category_2: Category) -> None:
     assert category_1.name == "Смартфоны"
     assert category_1.description == "Смартфоны для удобства жизни"
     assert len(category_1.products) == 2

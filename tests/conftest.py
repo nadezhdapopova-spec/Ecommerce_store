@@ -1,12 +1,10 @@
-from typing import Any
-
 import pytest
 
-from src.models import Product, Category
+from src.models import Category, Product
 
 
 @pytest.fixture
-def product_1() -> Any:
+def product_1() -> Product:
     return Product(
         name="Xiaomi Redmi Note 11",
         description="1024GB, Синий",
@@ -16,7 +14,7 @@ def product_1() -> Any:
 
 
 @pytest.fixture
-def product_2() -> Any:
+def product_2() -> Product:
     return Product(
         name="Samsung Galaxy C23 Ultra",
         description="256GB, Серый цвет, 200MP камера",
@@ -26,7 +24,7 @@ def product_2() -> Any:
 
 
 @pytest.fixture
-def category_1() -> Any:
+def category_1() -> Category:
     return Category(
         name="Смартфоны",
         description="Смартфоны для удобства жизни",
@@ -46,7 +44,7 @@ def category_1() -> Any:
 
 
 @pytest.fixture
-def category_2() -> Any:
+def category_2() -> Category:
     return Category(
         name="Телевизоры",
         description="Ваш друг и помощник",
