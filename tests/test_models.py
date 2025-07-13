@@ -69,11 +69,11 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
 def test_category_init(category_1: Category, category_2: Category) -> None:
     assert category_1.name == "Смартфоны"
     assert category_1.description == "Смартфоны для удобства жизни"
-    assert len(category_1.products) == 2
+    assert len(category_1.products_list()) == 2
 
     assert category_2.name == "Телевизоры"
     assert category_2.description == "Ваш друг и помощник"
-    assert len(category_2.products) == 1
+    assert len(category_2.products_list()) == 1
 
     assert Category.category_count == 2
     assert category_1.product_count == 3
