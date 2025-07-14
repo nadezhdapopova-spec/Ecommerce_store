@@ -13,10 +13,10 @@ def test_product_init(product_1: Product, product_2: Product) -> None:
     assert product_2.quantity == 5
 
 
-def test_new_product_in_product_list(new_product_data: dict, products_list: list) -> None:
-    updated_product = Product.new_product(new_product_data, product_list=products_list)
+def test_new_product_in_product_list(new_product_data: dict, prods_list: list) -> None:
+    updated_product = Product.new_product(new_product_data, product_list=prods_list)
 
-    assert updated_product in products_list
+    assert updated_product in prods_list
     assert updated_product.quantity == 10
     assert updated_product.price == 181000.0
 
@@ -69,11 +69,11 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
 def test_category_init(category_1: Category, category_2: Category) -> None:
     assert category_1.name == "Смартфоны"
     assert category_1.description == "Смартфоны для удобства жизни"
-    assert len(category_1.products_list()) == 2
+    assert len(category_1.products_list) == 2
 
     assert category_2.name == "Телевизоры"
     assert category_2.description == "Ваш друг и помощник"
-    assert len(category_2.products_list()) == 1
+    assert len(category_2.products_list) == 1
 
     assert Category.category_count == 2
     assert category_1.product_count == 3

@@ -71,6 +71,7 @@ class Category:
             products_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
         return products_str
 
+    @property
     def products_list(self) -> list:
         """Возвращает список товаров в категории"""
         return self.__products
