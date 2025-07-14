@@ -2,7 +2,7 @@ from typing import Any, Optional
 
 
 class Product:
-    """Класс для создания продуктов"""
+    """Класс для создания товаров"""
     name: str
     description: str
     price: float
@@ -28,10 +28,12 @@ class Product:
 
     @property
     def price(self) -> Any:
+        """Возвращает цену товара"""
         return self.__price
 
     @price.setter
     def price(self, new_price: float) -> None:
+        """Обновляет цену товара по условию"""
         if new_price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
@@ -42,7 +44,7 @@ class Product:
 
 
 class Category:
-    """Класс для создания категорий продуктов"""
+    """Класс для создания категорий товаров"""
     name: str
     description: str
     products: list
@@ -57,15 +59,18 @@ class Category:
         Category.product_count += len(products)
 
     def add_product(self, product: Product) -> None:
+        """Добавляет новый товар в категорию"""
         self.__products.append(product)
         Category.product_count += 1
 
     @property
     def products(self) -> str:
+        """Переобразует список товаров в категории в строку заданного формата и возвращает ее"""
         products_str = ""
         for product in self.__products:
             products_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
         return products_str
 
     def products_list(self) -> list:
+        """Возвращает список товаров в категории"""
         return self.__products
