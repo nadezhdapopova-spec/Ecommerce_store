@@ -16,6 +16,8 @@ def test_read_json(mock_file: Any, mock_json_load: Any) -> None:
 
 
 def test_create_objects_from_json(data_from_json: list[dict]) -> None:
+    Category.product_count = 0
+    Category.category_count = 0
     result = create_objects_from_json(data_from_json)
 
     assert result[0].name == "Смартфоны"
