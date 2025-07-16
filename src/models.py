@@ -19,7 +19,7 @@ class Product:
 
     def __add__(self, other: Any) -> Any:
         """Возвращает сумму полной стоимости указанных товаров на складе"""
-        return self.__price * self.quantity + other.price * other.quantity
+        return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
     def new_product(cls, kwargs: dict, product_list: Optional[list] = None) -> Any:
