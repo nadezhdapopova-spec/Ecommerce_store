@@ -1,11 +1,12 @@
 import json
 import os
+from typing import Any
 
 from config import ROOT_DIR
 from src.models import Category, Product
 
 
-def read_json(file_path: str) -> list[dict]:
+def read_json(file_path: str) -> Any:
     with open(file_path, "r", encoding="utf8") as f:
         data = json.load(f)
 
