@@ -1,3 +1,7 @@
+from typing import Any
+
+import pytest
+
 from src.models import Category, Product
 
 
@@ -38,3 +42,13 @@ def test_add_product(product_1: Product) -> None:
 
     category.add_product(product_1)
     assert product_str in category.products
+
+
+def test_products_iteration(products_iterator: Any) -> None:
+    iter(products_iterator)
+    assert products_iterator.index == 0
+    assert next(products_iterator).name == "Samsung Galaxy C23 Ultra"
+    assert next(products_iterator).name == "Xiaomi Redmi Note 11"
+
+    with pytest.raises(StopIteration):
+        next(products_iterator)

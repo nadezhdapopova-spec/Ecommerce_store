@@ -103,11 +103,11 @@ class ProductsIterator:
         self.category = category_obj
         self.index = 0
 
-    def __iter__(self):
+    def __iter__(self) -> Any:
         self.index = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> Any:
         if self.index < len(self.category.products_list):
             product = self.category.products_list[self.index]
             self.index += 1

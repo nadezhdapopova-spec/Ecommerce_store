@@ -1,6 +1,6 @@
 import pytest
 
-from src.models import Category, Product
+from src.models import Category, Product, ProductsIterator
 
 
 @pytest.fixture
@@ -115,3 +115,8 @@ def data_from_json() -> list[dict]:
             ]
         }
     ]
+
+
+@pytest.fixture
+def products_iterator(category_1: Category) -> ProductsIterator:
+    return ProductsIterator(category_1)
