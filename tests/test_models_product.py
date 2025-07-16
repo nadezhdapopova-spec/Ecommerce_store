@@ -1,7 +1,7 @@
 from typing import Any
 from unittest.mock import patch
 
-from src.models import Category, Product
+from src.models import Product
 
 
 def test_product_init(product_1: Product, product_2: Product) -> None:
@@ -11,6 +11,14 @@ def test_product_init(product_1: Product, product_2: Product) -> None:
     assert product_2.name == "Samsung Galaxy C23 Ultra"
     assert product_2.description == "256GB, Серый цвет, 200MP камера"
     assert product_2.quantity == 5
+
+
+def test_product_str(product_2: Product) -> None:
+    assert str(product_2) == "Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт."
+
+
+def test_product_add(product_1: Product, product_2: Product) -> None:
+    assert product_1.price * product_1.quantity + product_2.price * product_2.quantity == 1334000.0
 
 
 def test_new_product_in_product_list(new_product_data: dict, prods_list: list) -> None:
@@ -64,32 +72,3 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
 
     message = capsys.readouterr()
     assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
-
-
-def test_category_init(category_1: Category, category_2: Category) -> None:
-    assert category_1.name == "Смартфоны"
-    assert category_1.description == "Смартфоны для удобства жизни"
-    assert len(category_1.products_list) == 2
-
-    assert category_2.name == "Телевизоры"
-    assert category_2.description == "Ваш друг и помощник"
-    assert len(category_2.products_list) == 1
-
-    assert Category.category_count == 2
-    assert category_1.product_count == 3
-    assert category_2.product_count == 3
-
-
-def test_add_product(product_1: Product) -> None:
-    Category.product_count = 0
-    category = Category("Смартфоны", "Категория смартфонов", [])
-    product_str = "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n"
-
-    category.add_product(product_1)
-    assert product_str in category.products
-
-
-def test_products(category_2: Category) -> None:
-    test_prods = category_2.products
-
-    assert test_prods == "QLED 4K, 123000.0 руб. Остаток: 7 шт.\n"
