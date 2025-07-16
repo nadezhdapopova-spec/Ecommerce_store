@@ -1,8 +1,6 @@
 import json
-import os
 from typing import Any
 
-from config import ROOT_DIR
 from src.models import Category, Product
 
 
