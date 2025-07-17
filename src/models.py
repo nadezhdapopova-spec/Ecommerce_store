@@ -9,6 +9,10 @@ class Product:
     quantity: int
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+        if price <= 0:
+            raise ValueError("Цена должна быть положительной")
+        if quantity < 0:
+            raise ValueError("Количество не может быть отрицательным")
         self.name = name
         self.description = description
         self.__price = price
@@ -19,12 +23,18 @@ class Product:
 
     def __add__(self, other: Any) -> Any:
         """Возвращает сумму полной стоимости указанных товаров на складе"""
+        if not isinstance(other, Product):
+            raise TypeError(f"Товар {other} не является объектом Product")
         return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
     def new_product(cls, kwargs: dict, product_list: Optional[list] = None) -> Any:
         """Создает товар как экземпляр класса Product на основе данных словаря, если такой товар не добавлен.
            Иначе обновляет информацию о товаре (цена, количество)"""
+        required_keys = {"name", "description", "price", "quantity"}
+        if not required_keys.issubset(kwargs):
+            raise KeyError("Отсутствуют необходимые ключи")
+
         if product_list:
             for product in product_list:
                 if product.name.lower() == kwargs["name"].lower():
@@ -41,6 +51,8 @@ class Product:
     @price.setter
     def price(self, new_price: float) -> None:
         """Обновляет цену товара по условию"""
+        if not isinstance(new_price, (int, float)):
+            raise TypeError("Цена не является числом.")
         if new_price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
@@ -58,7 +70,9 @@ class Category:
     category_count = 0  # количество категорий
     product_count = 0  # общее количество товаров во всех категориях
 
-    def __init__(self, name: str, description: str, products: list) -> None:
+    def __init__(self, name: str, description: str, products: Optional[list] = None) -> None:
+        if products is None:
+            products = []
         self.name = name
         self.description = description
         self.__products = products
@@ -92,6 +106,8 @@ class Category:
 
     def add_product(self, product: Product) -> None:
         """Добавляет новый товар в категорию"""
+        if not isinstance(product, Product):
+            raise TypeError(f"Товар {product} не является объектом Product")
         self.__products.append(product)
         Category.product_count += 1
 
