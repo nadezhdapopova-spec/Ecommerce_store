@@ -59,9 +59,25 @@ def category_2() -> Category:
 
 
 @pytest.fixture
+def category_3() -> Category:
+    return Category(
+        name="Ноутбуки",
+        description="Ваш помощник в работе",
+        products=None
+    )
+
+
+@pytest.fixture
 def new_product_data() -> dict:
     return {"name": "Samsung Galaxy S23",
             "description": "256GB, Серый цвет, 200MP камера",
+            "price": 181000.0,
+            "quantity": 5}
+
+
+@pytest.fixture
+def new_product_invalid_data() -> dict:
+    return {"name": "Samsung Galaxy S23",
             "price": 181000.0,
             "quantity": 5}
 
