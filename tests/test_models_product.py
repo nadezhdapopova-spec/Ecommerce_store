@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.models import Product, Category
+from src.models import Category, Product
 
 
 def test_product_init(product_1: Product, product_2: Product) -> None:
@@ -49,7 +49,7 @@ def test_product_add(product_1: Product, product_2: Product) -> None:
 
 def test_product_add_invalid(product_1: Product, category_1: Category) -> None:
     with pytest.raises(TypeError):
-        result = product_1 + category_1
+        _ = product_1 + category_1
 
 
 def test_new_product_in_product_list(new_product_data: dict, prods_list: list) -> None:
@@ -69,7 +69,7 @@ def test_new_product_not_product_list(new_product_data: dict) -> None:
     assert updated_product.price == 181000.0
 
 
-def test_new_product_invalid_data(new_product_invalid_data) -> None:
+def test_new_product_invalid_data(new_product_invalid_data: dict) -> None:
     with pytest.raises(KeyError):
         Product.new_product(new_product_invalid_data)
 
@@ -110,6 +110,6 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
     assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
 
 
-def test_price_not_number(product_1) -> None:
+def test_price_not_number(product_1: Product) -> None:
     with pytest.raises(TypeError):
         product_1.price = "180000.0"

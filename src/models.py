@@ -49,7 +49,7 @@ class Product:
         return self.__price
 
     @price.setter
-    def price(self, new_price: float|int) -> None:
+    def price(self, new_price: float | int) -> None:
         """Обновляет цену товара по условию"""
         if not isinstance(new_price, (int, float)):
             raise TypeError("Цена не является числом.")
