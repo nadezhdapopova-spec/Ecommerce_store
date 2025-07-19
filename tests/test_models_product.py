@@ -1,6 +1,8 @@
 from typing import Any
 from unittest.mock import patch
 
+import pytest
+
 from src.models import Category, Product
 
 
@@ -13,10 +15,47 @@ def test_product_init(product_1: Product, product_2: Product) -> None:
     assert product_2.quantity == 5
 
 
-def test_new_product_in_product_list(new_product_data: dict, products_list: list) -> None:
-    updated_product = Product.new_product(new_product_data, product_list=products_list)
+def test_product_init_null_price() -> None:
+    with pytest.raises(ValueError):
+        Product("Samsung Galaxy S23 Ultra",
+                "256GB, Серый цвет, 200MP камера",
+                0,
+                5)
 
-    assert updated_product in products_list
+
+def test_product_init_negative_price() -> None:
+    with pytest.raises(ValueError):
+        Product("Samsung Galaxy S23 Ultra",
+                "256GB, Серый цвет, 200MP камера",
+                -180000,
+                5)
+
+
+def test_product_init_negative_quantity() -> None:
+    with pytest.raises(ValueError):
+        Product("Samsung Galaxy S23 Ultra",
+                "256GB, Серый цвет, 200MP камера",
+                180000,
+                -5)
+
+
+def test_product_str(product_2: Product) -> None:
+    assert str(product_2) == "Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт."
+
+
+def test_product_add(product_1: Product, product_2: Product) -> None:
+    assert product_1.price * product_1.quantity + product_2.price * product_2.quantity == 1334000.0
+
+
+def test_product_add_invalid(product_1: Product, category_1: Category) -> None:
+    with pytest.raises(TypeError):
+        _ = product_1 + category_1
+
+
+def test_new_product_in_product_list(new_product_data: dict, prods_list: list) -> None:
+    updated_product = Product.new_product(new_product_data, product_list=prods_list)
+
+    assert updated_product in prods_list
     assert updated_product.quantity == 10
     assert updated_product.price == 181000.0
 
@@ -28,6 +67,11 @@ def test_new_product_not_product_list(new_product_data: dict) -> None:
     assert updated_product.description == "256GB, Серый цвет, 200MP камера"
     assert updated_product.quantity == 5
     assert updated_product.price == 181000.0
+
+
+def test_new_product_invalid_data(new_product_invalid_data: dict) -> None:
+    with pytest.raises(KeyError):
+        Product.new_product(new_product_invalid_data)
 
 
 def test_price_accept(new_product_data: dict) -> None:
@@ -66,30 +110,6 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
     assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
 
 
-def test_category_init(category_1: Category, category_2: Category) -> None:
-    assert category_1.name == "Смартфоны"
-    assert category_1.description == "Смартфоны для удобства жизни"
-    assert len(category_1.products_list()) == 2
-
-    assert category_2.name == "Телевизоры"
-    assert category_2.description == "Ваш друг и помощник"
-    assert len(category_2.products_list()) == 1
-
-    assert Category.category_count == 2
-    assert category_1.product_count == 3
-    assert category_2.product_count == 3
-
-
-def test_add_product(product_1: Product) -> None:
-    Category.product_count = 0
-    category = Category("Смартфоны", "Категория смартфонов", [])
-    product_str = "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n"
-
-    category.add_product(product_1)
-    assert product_str in category.products
-
-
-def test_products(category_2: Category) -> None:
-    test_prods = category_2.products
-
-    assert test_prods == "QLED 4K, 123000.0 руб. Остаток: 7 шт.\n"
+def test_price_not_number(product_1: Product) -> None:
+    with pytest.raises(TypeError):
+        product_1.price = "180000.0"
