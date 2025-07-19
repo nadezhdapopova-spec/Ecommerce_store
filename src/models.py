@@ -9,6 +9,7 @@ class Product:
     quantity: int
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+        """Конструктор для товара"""
         if price <= 0:
             raise ValueError("Цена должна быть положительной")
         if quantity < 0:
@@ -19,6 +20,7 @@ class Product:
         self.quantity = quantity
 
     def __str__(self) -> str:
+        """Возвращает строковое представление товара для пользователя"""
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Any) -> Any:
@@ -29,7 +31,7 @@ class Product:
 
     @classmethod
     def new_product(cls, kwargs: dict, product_list: Optional[list] = None) -> Any:
-        """Создает товар как экземпляр класса Product на основе данных словаря, если такой товар не добавлен.
+        """Создает товар как объект класса Product, если товар ранее не добавлен.
            Иначе обновляет информацию о товаре (цена, количество)"""
         required_keys = {"name", "description", "price", "quantity"}
         if not required_keys.issubset(kwargs):
@@ -71,6 +73,7 @@ class Category:
     product_count = 0  # общее количество товаров во всех категориях
 
     def __init__(self, name: str, description: str, products: Optional[list] = None) -> None:
+        """Конструктор для категории"""
         if products is None:
             products = []
         self.name = name
@@ -116,14 +119,17 @@ class ProductsIterator:
     category_obj: Category
 
     def __init__(self, category_obj: Category):
+        """Конструктор для итератора списка товаров в категории"""
         self.category = category_obj
         self.index = 0
 
     def __iter__(self) -> Any:
+        """Возвращает итератор"""
         self.index = 0
         return self
 
     def __next__(self) -> Any:
+        """Возвращает следующий товар из списка товаров в категории"""
         if self.index < len(self.category.products_list):
             product = self.category.products_list[self.index]
             self.index += 1

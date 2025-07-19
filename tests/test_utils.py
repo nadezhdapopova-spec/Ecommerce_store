@@ -8,6 +8,7 @@ from src.utils import create_objects_from_json, read_json
 @patch("json.load")
 @patch("builtins.open", new_callable=mock_open)
 def test_read_json(mock_file: Any, mock_json_load: Any) -> None:
+    """Проверяет чтение json-файла"""
     mock_json_load.return_value = [{"key": "value"}]
 
     result = read_json("test_path.json")
@@ -16,6 +17,7 @@ def test_read_json(mock_file: Any, mock_json_load: Any) -> None:
 
 
 def test_create_objects_from_json(data_from_json: list[dict]) -> None:
+    """Проверяет преобразование содержимого json-файла в объекты классов Category и Product"""
     Category.product_count = 0
     Category.category_count = 0
     result = create_objects_from_json(data_from_json)
