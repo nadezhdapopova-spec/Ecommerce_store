@@ -16,7 +16,7 @@ def test_product_init(product_1: Product, product_2: Product) -> None:
     assert product_2.quantity == 5
 
 
-def test_product_init_null_price() -> None:
+def test_product_validate_price_null() -> None:
     """Проверяет вызов исключения при добавлении товара с ценой 0"""
     with pytest.raises(ValueError):
         Product("Samsung Galaxy S23 Ultra",
@@ -25,7 +25,7 @@ def test_product_init_null_price() -> None:
                 5)
 
 
-def test_product_init_negative_price() -> None:
+def test_product_validate_price_negative() -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательной ценой"""
     with pytest.raises(ValueError):
         Product("Samsung Galaxy S23 Ultra",
@@ -34,7 +34,7 @@ def test_product_init_negative_price() -> None:
                 5)
 
 
-def test_product_init_negative_quantity() -> None:
+def test_product_validate_quantity_negative() -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательным количеством"""
     with pytest.raises(ValueError):
         Product("Samsung Galaxy S23 Ultra",
