@@ -12,8 +12,8 @@ class Product:
         """Конструктор для товара"""
         self.name = name
         self.description = description
-        self.__price = self.validate_price(price)
-        self.quantity = self.validate_quantity(quantity)
+        self.__price = Product.validate_price(price)
+        self.quantity = Product.validate_quantity(quantity)
 
     def __str__(self) -> str:
         """Возвращает строковое представление товара для пользователя"""
