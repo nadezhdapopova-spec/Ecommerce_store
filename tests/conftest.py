@@ -1,7 +1,7 @@
 import pytest
 
 from src.models import Category, Product, ProductsIterator
-from src.products import Smartphone, LawnGrass
+from src.products import LawnGrass, Smartphone
 
 
 @pytest.fixture

@@ -124,7 +124,7 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
     assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
 
 
-def test_price_not_number(product_1: Product) -> None:
+def test_price_not_number(product_1: Any) -> None:
     """Проверяет попытку изменить цену товара на нечисловое значение"""
     with pytest.raises(TypeError):
         product_1.price = "180000.0"

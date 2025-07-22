@@ -53,7 +53,7 @@ def test_add_product(product_1: Product) -> None:
     assert product_str in category.products
 
 
-def test_add_product_invalid(category_1: Category) -> None:
+def test_add_product_invalid(category_1: Any) -> None:
     """Проверяет вызов исключения при добавлении в категорию товара, не являющегося объектом Product"""
     with pytest.raises(TypeError):
         category_1.add_product("не является товаром")

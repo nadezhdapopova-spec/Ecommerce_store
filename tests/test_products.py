@@ -1,6 +1,6 @@
 import pytest
 
-from src.products import Smartphone, LawnGrass
+from src.products import LawnGrass, Smartphone
 
 
 def test_smartphone_product_init(smartphone_product_1: Smartphone) -> None:
@@ -27,7 +27,7 @@ def test_smartphone_product_add_invalid(smartphone_product_1: Smartphone, lawn_q
         _ = smartphone_product_1 + lawn_qrass_product_1
 
 
-def test_lawn_qrass_product_init(lawn_qrass_product_1) -> None:
+def test_lawn_qrass_product_init(lawn_qrass_product_1: LawnGrass) -> None:
     """Проверяет инициализацию объектов класса LawnGrass"""
     assert lawn_qrass_product_1.name == "Газонная трава"
     assert lawn_qrass_product_1.description == "Элитная трава для газона"

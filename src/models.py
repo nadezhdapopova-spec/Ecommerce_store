@@ -8,7 +8,7 @@ class Product:
     price: int | float
     quantity: int
 
-    def __init__(self, name: str, description: str, price: int| float, quantity: int) -> None:
+    def __init__(self, name: str, description: str, price: int | float, quantity: int) -> None:
         """Конструктор для товара"""
         self.name = name
         self.description = description
@@ -60,13 +60,13 @@ class Product:
         return cls(**kwargs)
 
     @staticmethod
-    def validate_price(price: int | float):
+    def validate_price(price: int | float) -> int | float:
         if price <= 0:
             raise ValueError("Цена должна быть положительной")
         return price
 
     @staticmethod
-    def validate_quantity(quantity: int):
+    def validate_quantity(quantity: int) -> int:
         if quantity < 0:
             raise ValueError("Количество не может быть отрицательным")
         return quantity

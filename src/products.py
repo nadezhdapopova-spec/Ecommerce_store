@@ -12,7 +12,7 @@ class Smartphone(Product):
     def __init__(self,
                  name: str,
                  description: str,
-                 price: int| float,
+                 price: int | float,
                  quantity: int,
                  efficiency: int | float,
                  model: str,
