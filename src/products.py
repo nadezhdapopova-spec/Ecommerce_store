@@ -1,3 +1,5 @@
+from typing import Any
+
 from src.models import Product
 
 
@@ -22,6 +24,13 @@ class Smartphone(Product):
         self.memory = memory
         self.color = color
 
+    def __add__(self, other: Any) -> int | float:
+        """Возвращает сумму полной стоимости указанных товаров на складе"""
+        if type(other) is Smartphone:
+            return self.price * self.quantity + other.price * other.quantity
+
+        raise TypeError
+
 
 class LawnGrass(Product):
     country: str
@@ -35,8 +44,15 @@ class LawnGrass(Product):
                  quantity: int,
                  country: str,
                  germination_period: str,
-                 color: str):
+                 color: str) -> None:
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
         self.color = color
+
+    def __add__(self, other: Any) -> int | float:
+        """Возвращает сумму полной стоимости указанных товаров на складе"""
+        if type(other) is LawnGrass:
+            return self.price * self.quantity + other.price * other.quantity
+
+        raise TypeError
