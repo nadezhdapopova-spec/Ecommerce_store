@@ -76,7 +76,7 @@ class Product(BaseProduct, InfoClassMixin):
         return quantity
 
 
-class Category:
+class Category(InfoClassMixin):
     """Класс для создания категорий товаров"""
     name: str
     description: str
@@ -91,6 +91,7 @@ class Category:
         self.__products = products if products else []
         Category.category_count += 1
         Category.product_count += len(products) if products else 0
+        super().__init__()
 
     def __str__(self) -> str:
         """Возвращает строковое представление категории для пользователя"""
