@@ -125,6 +125,11 @@ class Category(InfoClassMixin):
         self.__products.append(product)
         Category.product_count += 1
 
+    @classmethod
+    def clear_context(cls):
+        cls.category_count = 0
+        cls.product_count = 0
+
 
 class ProductsIterator:
     category_obj: Category

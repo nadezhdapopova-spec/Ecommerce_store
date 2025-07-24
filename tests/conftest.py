@@ -68,6 +68,11 @@ def category_3() -> Category:
     )
 
 
+@pytest.fixture(autouse=True)
+def reset_class_variables():
+    Category.clear_context()
+
+
 @pytest.fixture
 def new_product_data() -> dict:
     return {"name": "Samsung Galaxy S23",
