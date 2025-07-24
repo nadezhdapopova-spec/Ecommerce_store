@@ -1,6 +1,7 @@
 import pytest
 
 from src.models import Category, Product, ProductsIterator
+from src.products import LawnGrass, Smartphone
 
 
 @pytest.fixture
@@ -136,3 +137,49 @@ def data_from_json() -> list[dict]:
 @pytest.fixture
 def products_iterator(category_1: Category) -> ProductsIterator:
     return ProductsIterator(category_1)
+
+
+@pytest.fixture
+def smartphone_product_1() -> Smartphone:
+    return Smartphone("Xiaomi Redmi Note 11",
+                      "1024GB, Синий",
+                      31000.0,
+                      14,
+                      90.3,
+                      "Note 11",
+                      1024,
+                      "Синий")
+
+
+@pytest.fixture
+def smartphone_product_2() -> Smartphone:
+    return Smartphone("Iphone 15",
+                      "512GB, Gray space",
+                      210000.0,
+                      8,
+                      98.2,
+                      "15",
+                      512,
+                      "Gray space")
+
+
+@pytest.fixture
+def lawn_qrass_product_1() -> LawnGrass:
+    return LawnGrass("Газонная трава",
+                     "Элитная трава для газона",
+                     500.0,
+                     20,
+                     "Россия",
+                     "7 дней",
+                     "Зеленый")
+
+
+@pytest.fixture
+def lawn_qrass_product_2() -> LawnGrass:
+    return LawnGrass("Газонная трава 2",
+                     "Выносливая трава",
+                     450.0,
+                     15,
+                     "США",
+                     "5 дней",
+                     "Темно-зеленый")
