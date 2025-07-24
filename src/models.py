@@ -1,7 +1,10 @@
 from typing import Any, Optional
 
+from src.base_product import BaseProduct
+from src.info_class_mixin import InfoClassMixin
 
-class Product:
+
+class Product(BaseProduct, InfoClassMixin):
     """Класс для создания товаров"""
     name: str
     description: str
@@ -14,6 +17,7 @@ class Product:
         self.description = description
         self.__price = Product.validate_price(price)
         self.quantity = Product.validate_quantity(quantity)
+        super().__init__()
 
     def __str__(self) -> str:
         """Возвращает строковое представление товара для пользователя"""
