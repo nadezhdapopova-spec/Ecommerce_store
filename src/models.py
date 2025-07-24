@@ -126,7 +126,7 @@ class Category(InfoClassMixin):
         Category.product_count += 1
 
     @classmethod
-    def clear_context(cls):
+    def clear_context(cls) -> None:
         cls.category_count = 0
         cls.product_count = 0
 
