@@ -148,12 +148,12 @@ class Order(BaseCatalogObject, InfoClassMixin):
 
     def __str__(self) -> str:
         """Возвращает строковое представление заказа для пользователя"""
-        return f"{self.__product}, количество: {self.count} шт., стоимость: {self.__total_price} руб."
+        return f"{self.__product.name}, количество: {self.count} шт., стоимость: {self.__total_price} руб."
 
     @property
     def product(self) -> str:
         """Возвращает описание заказа"""
-        return str(self.__product)
+        return self.__str__()
 
     @property
     def total_price(self) -> int | float:
