@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from src.base_product import BaseCatalogObject, BaseProduct
+from src.base_classes import BaseCatalogObject, BaseProduct
 from src.info_class_mixin import InfoClassMixin
 
 
