@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from src.base_product import BaseProduct
+from src.base_product import BaseCatalogObject, BaseProduct
 from src.info_class_mixin import InfoClassMixin
 
 
@@ -65,18 +65,20 @@ class Product(BaseProduct, InfoClassMixin):
 
     @staticmethod
     def validate_price(price: int | float) -> int | float:
+        """Проверяет, что цена товара больше 0"""
         if price <= 0:
             raise ValueError("Цена должна быть положительной")
         return price
 
     @staticmethod
     def validate_quantity(quantity: int) -> int:
+        """Проверяет, что количество товара не менее 0"""
         if quantity < 0:
             raise ValueError("Количество не может быть отрицательным")
         return quantity
 
 
-class Category(InfoClassMixin):
+class Category(BaseCatalogObject, InfoClassMixin):
     """Класс для создания категорий товаров"""
     name: str
     description: str
@@ -127,8 +129,59 @@ class Category(InfoClassMixin):
 
     @classmethod
     def clear_context(cls) -> None:
+        """Обнуляет количество категорий, общее количество товаров во всех категориях"""
         cls.category_count = 0
         cls.product_count = 0
+
+
+class Order(BaseCatalogObject, InfoClassMixin):
+    """Класс для создания заказа"""
+    product: Product
+    count: int
+
+    def __init__(self, product: Product, count: int) -> None:
+        """Конструктор для заказа"""
+        self.__product = Order.validate_product(product)
+        self.count = Order.validate_count(count, product)
+        self.__total_price = self.get_total_price()
+        super().__init__()
+
+    def __str__(self) -> str:
+        """Возвращает строковое представление заказа для пользователя"""
+        return f"{self.__product}, количество: {self.count} шт., стоимость: {self.__total_price} руб."
+
+    @property
+    def product(self) -> str:
+        """Возвращает описание заказа"""
+        return str(self.__product)
+
+    @property
+    def total_price(self) -> int | float:
+        """Возвращает общую стоимость заказа"""
+        return self.__total_price
+
+    def get_total_price(self) -> int | float:
+        """Возвращает общую стоимость товара"""
+        return self.__product.price * self.count
+
+    @staticmethod
+    def validate_product(product: Product) -> Product:
+        """Проверяет, что товар является объектом класса Product"""
+        if not isinstance(product, Product):
+            raise TypeError("Товар не является объектом класса Product")
+        return product
+
+    @staticmethod
+    def validate_count(count: int, product: Product) -> int:
+        """Проверяет, что количество товара целое число больше 0.
+           Проверяет, что количества товаров хватает в магазине"""
+        if type(count) is not int:
+            raise TypeError("Количество товара должно быть целым числом")
+        if count <= 0:
+            raise ValueError("Количество товара не может быть отрицательным или равным нулю")
+        if count > product.quantity:
+            raise ValueError(f"Количество товара в магазине: {product.quantity}")
+        return count
 
 
 class ProductsIterator:

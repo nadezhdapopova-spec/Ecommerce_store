@@ -1,4 +1,4 @@
-from src.models import Category, Product, ProductsIterator
+from src.models import Category, Order, Product, ProductsIterator
 from src.products import LawnGrass, Smartphone
 
 if __name__ == "__main__":
@@ -280,3 +280,14 @@ if __name__ == "__main__":
 
     print(Category.category_count)
     print(Category.product_count)
+    print()
+
+    order1 = Order(Product("Samsung Galaxy S23 Ultra",
+                           "256GB, Серый цвет, 200MP камера",
+                           180000.0,
+                           5),
+                   2)
+
+    print(order1.product)
+    print(order1.count)
+    print(order1.total_price)
