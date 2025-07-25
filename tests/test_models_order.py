@@ -39,6 +39,12 @@ def test_validate_count_negative(product_1: Product) -> None:
         _ = Order(product_1, -5)
 
 
+def test_validate_count_float(product_1: Product) -> None:
+    """Проверяет вызов исключения при добавлении товара с отрицательным количеством"""
+    with pytest.raises(TypeError):
+        _ = Order(product_1, 5.5)
+
+
 def test_validate_count_too_much(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении количества товара больше, чем есть в наличии"""
     with pytest.raises(ValueError):
