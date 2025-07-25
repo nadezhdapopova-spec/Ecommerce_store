@@ -1,6 +1,8 @@
+from typing import Any
+
 import pytest
 
-from src.models import Product, Order, Category
+from src.models import Category, Order, Product
 from src.products import Smartphone
 
 
@@ -19,25 +21,25 @@ def test_order_init(product_1: Product, smartphone_product_2: Smartphone) -> Non
     assert order_2.total_price == 420000.0
 
 
-def test_validate_product(category_2: Category) -> None:
+def test_validate_product(category_2: Any) -> None:
     """Проверяет вызов исключения при добавлении товара, не являющегося объектом класса Product"""
     with pytest.raises(TypeError):
         _ = Order(category_2, 3)
 
 
-def test_validate_count_null(product_1) -> None:
+def test_validate_count_null(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении товара с количеством 0"""
     with pytest.raises(ValueError):
         _ = Order(product_1, 0)
 
 
-def test_validate_count_negative(product_1) -> None:
+def test_validate_count_negative(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательным количеством"""
     with pytest.raises(ValueError):
         _ = Order(product_1, -5)
 
 
-def test_validate_count_too_much(product_1) -> None:
+def test_validate_count_too_much(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении количества товара больше, чем есть в наличии"""
     with pytest.raises(ValueError):
         _ = Order(product_1, 15)
