@@ -15,8 +15,8 @@ class Product(BaseProduct, InfoClassMixin):
         """Конструктор для товара"""
         self.name = name
         self.description = description
-        self.__price = Product.validate_price(price)
-        self.quantity = Product.validate_quantity(quantity)
+        self.__price = self.validate_price(price)
+        self.quantity = self.validate_quantity(quantity)
         super().__init__()
 
     def __str__(self) -> str:
@@ -62,20 +62,6 @@ class Product(BaseProduct, InfoClassMixin):
                     product.__price = max(product.__price, kwargs.get("price"))
                     return product
         return cls(**kwargs)
-
-    @staticmethod
-    def validate_price(price: int | float) -> int | float:
-        """Проверяет, что цена товара больше 0"""
-        if price <= 0:
-            raise ValueError("Цена должна быть положительной")
-        return price
-
-    @staticmethod
-    def validate_quantity(quantity: int) -> int:
-        """Проверяет, что количество товара не менее 0"""
-        if quantity < 0:
-            raise ValueError("Количество не может быть отрицательным")
-        return quantity
 
 
 class Category(BaseCatalogObject, InfoClassMixin):

@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 
-from src.models import Category, Order, Product
+from src.models import Order, Product
 from src.products import Smartphone
 
 
