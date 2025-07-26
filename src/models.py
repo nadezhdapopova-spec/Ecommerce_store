@@ -1,7 +1,10 @@
 from typing import Any, Optional
 
+from src.base_classes import BaseCatalogObject, BaseProduct
+from src.info_class_mixin import InfoClassMixin
 
-class Product:
+
+class Product(BaseProduct, InfoClassMixin):
     """Класс для создания товаров"""
     name: str
     description: str
@@ -12,8 +15,9 @@ class Product:
         """Конструктор для товара"""
         self.name = name
         self.description = description
-        self.__price = Product.validate_price(price)
-        self.quantity = Product.validate_quantity(quantity)
+        self.__price = self.validate_price(price)
+        self.quantity = self.validate_quantity(quantity)
+        super().__init__()
 
     def __str__(self) -> str:
         """Возвращает строковое представление товара для пользователя"""
@@ -59,20 +63,8 @@ class Product:
                     return product
         return cls(**kwargs)
 
-    @staticmethod
-    def validate_price(price: int | float) -> int | float:
-        if price <= 0:
-            raise ValueError("Цена должна быть положительной")
-        return price
 
-    @staticmethod
-    def validate_quantity(quantity: int) -> int:
-        if quantity < 0:
-            raise ValueError("Количество не может быть отрицательным")
-        return quantity
-
-
-class Category:
+class Category(BaseCatalogObject, InfoClassMixin):
     """Класс для создания категорий товаров"""
     name: str
     description: str
@@ -87,6 +79,7 @@ class Category:
         self.__products = products if products else []
         Category.category_count += 1
         Category.product_count += len(products) if products else 0
+        super().__init__()
 
     def __str__(self) -> str:
         """Возвращает строковое представление категории для пользователя"""
@@ -119,6 +112,62 @@ class Category:
             raise TypeError(f"Товар {product} не является объектом Product")
         self.__products.append(product)
         Category.product_count += 1
+
+    @classmethod
+    def clear_context(cls) -> None:
+        """Обнуляет количество категорий, общее количество товаров во всех категориях"""
+        cls.category_count = 0
+        cls.product_count = 0
+
+
+class Order(BaseCatalogObject, InfoClassMixin):
+    """Класс для создания заказа"""
+    product: Product
+    count: int
+
+    def __init__(self, product: Product, count: int) -> None:
+        """Конструктор для заказа"""
+        self.__product = Order.validate_product(product)
+        self.count = Order.validate_count(count, product)
+        self.__total_price = self.get_total_price()
+        super().__init__()
+
+    def __str__(self) -> str:
+        """Возвращает строковое представление заказа для пользователя"""
+        return f"{self.__product.name}, количество: {self.count} шт., стоимость: {self.__total_price} руб."
+
+    @property
+    def product(self) -> str:
+        """Возвращает описание заказа"""
+        return self.__str__()
+
+    @property
+    def total_price(self) -> int | float:
+        """Возвращает общую стоимость заказа"""
+        return self.__total_price
+
+    def get_total_price(self) -> int | float:
+        """Возвращает общую стоимость товара"""
+        return self.__product.price * self.count
+
+    @staticmethod
+    def validate_product(product: Product) -> Product:
+        """Проверяет, что товар является объектом класса Product"""
+        if not isinstance(product, Product):
+            raise TypeError("Товар не является объектом класса Product")
+        return product
+
+    @staticmethod
+    def validate_count(count: int, product: Product) -> int:
+        """Проверяет, что количество товара целое число больше 0.
+           Проверяет, что количества товаров хватает в магазине"""
+        if type(count) is not int:
+            raise TypeError("Количество товара должно быть целым числом")
+        if count <= 0:
+            raise ValueError("Количество товара не может быть отрицательным или равным нулю")
+        if count > product.quantity:
+            raise ValueError(f"Количество товара в магазине: {product.quantity}")
+        return count
 
 
 class ProductsIterator:

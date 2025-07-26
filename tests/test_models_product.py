@@ -111,7 +111,7 @@ def test_price_zero(new_product_data: dict, capsys: Any) -> None:
     assert test_product.price == 181000.0
 
     message = capsys.readouterr()
-    assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
+    assert message.out.strip().split("\n")[-1] == "Цена не должна быть нулевая или отрицательная"
 
 
 def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
@@ -121,7 +121,7 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
     assert test_product.price == 181000.0
 
     message = capsys.readouterr()
-    assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
+    assert message.out.strip().split("\n")[-1] == "Цена не должна быть нулевая или отрицательная"
 
 
 def test_price_not_number(product_1: Any) -> None:
