@@ -55,8 +55,18 @@ def test_add_product(product_1: Product) -> None:
 
 def test_add_product_invalid(category_1: Any) -> None:
     """Проверяет вызов исключения при добавлении в категорию товара, не являющегося объектом Product"""
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="Товар 'не является товаром' не является объектом Product"):
         category_1.add_product("не является товаром")
+
+
+def test_middle_price(category_1: Category) -> None:
+    """Проверяет вычисление средней стоимости товаров в категории"""
+    assert category_1.middle_price() == 105500.0
+
+
+def test_middle_price_not_products(category_3: Category) -> None:
+    """Проверяет вычисление средней стоимости, если товары в категории отсутствуют"""
+    assert category_3.middle_price() == 0
 
 
 def test_products_iteration(products_iterator: Any) -> None:

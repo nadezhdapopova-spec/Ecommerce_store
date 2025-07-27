@@ -38,7 +38,7 @@ class Product(BaseProduct, InfoClassMixin):
     def price(self, new_price: int | float) -> None:
         """Обновляет цену товара по условию"""
         if not isinstance(new_price, (int, float)):
-            raise TypeError("Цена не является числом.")
+            raise TypeError("Цена не является числом")
         if new_price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
@@ -109,7 +109,7 @@ class Category(BaseCatalogObject, InfoClassMixin):
     def add_product(self, product: Product) -> None:
         """Добавляет новый товар в категорию"""
         if not isinstance(product, Product):
-            raise TypeError(f"Товар {product} не является объектом Product")
+            raise TypeError(f"Товар '{product}' не является объектом Product")
         self.__products.append(product)
         Category.product_count += 1
 
@@ -161,7 +161,7 @@ class Order(BaseCatalogObject, InfoClassMixin):
     def validate_product(product: Product) -> Product:
         """Проверяет, что товар является объектом класса Product"""
         if not isinstance(product, Product):
-            raise TypeError("Товар не является объектом класса Product")
+            raise TypeError(f"Товар '{product}' не является объектом класса Product")
         return product
 
     @staticmethod

@@ -23,31 +23,32 @@ def test_order_init(product_1: Product, smartphone_product_2: Smartphone) -> Non
 
 def test_validate_product(category_2: Any) -> None:
     """Проверяет вызов исключения при добавлении товара, не являющегося объектом класса Product"""
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError,
+                       match="Товар 'Телевизоры, количество продуктов: 7 шт.' не является объектом класса Product"):
         _ = Order(category_2, 3)
 
 
 def test_validate_count_null(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении товара с количеством 0"""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Количество товара не может быть отрицательным или равным нулю"):
         _ = Order(product_1, 0)
 
 
 def test_validate_count_negative(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательным количеством"""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Количество товара не может быть отрицательным или равным нулю"):
         _ = Order(product_1, -5)
 
 
 def test_validate_count_float(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательным количеством"""
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="Количество товара должно быть целым числом"):
         _ = Order(product_1, 5.5)
 
 
 def test_validate_count_too_much(product_1: Product) -> None:
     """Проверяет вызов исключения при добавлении количества товара больше, чем есть в наличии"""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Количество товара в магазине: 14"):
         _ = Order(product_1, 15)
 
 
