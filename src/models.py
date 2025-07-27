@@ -1,6 +1,7 @@
 from typing import Any, Optional
 
 from src.base_classes import BaseCatalogObject, BaseProduct
+from src.exceptions import ProductQuantityError
 from src.info_class_mixin import InfoClassMixin
 
 
@@ -108,10 +109,16 @@ class Category(BaseCatalogObject, InfoClassMixin):
 
     def add_product(self, product: Product) -> None:
         """Добавляет новый товар в категорию"""
-        if not isinstance(product, Product):
-            raise TypeError(f"Товар '{product}' не является объектом Product")
-        self.__products.append(product)
-        Category.product_count += 1
+        try:
+            if not isinstance(product, Product):
+                raise TypeError(f"Товар '{product}' не является объектом Product")
+            self.__products.append(product)
+            Category.product_count += 1
+            print("Товар добавлен")
+        except TypeError as e:
+            print(f"Товар не добавлен. {str(e)}")
+        finally:
+            print("Обработка добавления товара завершена")
 
     def middle_price(self) -> int | float:
         """Вычисляет среднюю цену всех товаров категории"""
@@ -127,21 +134,21 @@ class Category(BaseCatalogObject, InfoClassMixin):
         cls.product_count = 0
 
 
-class Order(BaseCatalogObject, InfoClassMixin):
+class Order(BaseCatalogObject):
     """Класс для создания заказа"""
     product: Product
-    count: int
+    quantity: int
 
-    def __init__(self, product: Product, count: int) -> None:
+    def __init__(self, product: Product, quantity: int) -> None:
         """Конструктор для заказа"""
         self.__product = Order.validate_product(product)
-        self.count = Order.validate_count(count, product)
+        self.quantity = Order.validate_quantity(quantity, product)
         self.__total_price = self.get_total_price()
         super().__init__()
 
     def __str__(self) -> str:
         """Возвращает строковое представление заказа для пользователя"""
-        return f"{self.__product.name}, количество: {self.count} шт., стоимость: {self.__total_price} руб."
+        return f"{self.__product.name}, количество: {self.quantity} шт., стоимость: {self.__total_price} руб."
 
     @property
     def product(self) -> str:
@@ -155,7 +162,10 @@ class Order(BaseCatalogObject, InfoClassMixin):
 
     def get_total_price(self) -> int | float:
         """Возвращает общую стоимость товара"""
-        return self.__product.price * self.count
+        if self.quantity:
+            return self.__product.price * float(self.quantity)
+        else:
+            return 0
 
     @staticmethod
     def validate_product(product: Product) -> Product:
@@ -165,16 +175,20 @@ class Order(BaseCatalogObject, InfoClassMixin):
         return product
 
     @staticmethod
-    def validate_count(count: int, product: Product) -> int:
+    def validate_quantity(quantity: int, product: Product) -> int:
         """Проверяет, что количество товара целое число больше 0.
            Проверяет, что количества товаров хватает в магазине"""
-        if type(count) is not int:
-            raise TypeError("Количество товара должно быть целым числом")
-        if count <= 0:
-            raise ValueError("Количество товара не может быть отрицательным или равным нулю")
-        if count > product.quantity:
-            raise ValueError(f"Количество товара в магазине: {product.quantity}")
-        return count
+        try:
+            if type(quantity) is not int:
+                raise TypeError("Количество товара должно быть целым числом")
+            if quantity <= 0:
+                raise ProductQuantityError("Количество товара не может быть отрицательным или равным нулю")
+            if quantity > product.quantity:
+                raise ProductQuantityError(f"Количество товара в магазине: {product.quantity}")
+            print("Товар добавлен")
+            return quantity
+        finally:
+            print("Обработка добавления товара завершена")
 
 
 class ProductsIterator:

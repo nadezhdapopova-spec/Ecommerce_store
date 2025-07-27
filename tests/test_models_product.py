@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
+from src.exceptions import ProductPriceError
 from src.models import Category, Product
 
 
@@ -18,7 +19,7 @@ def test_product_init(product_1: Product, product_2: Product) -> None:
 
 def test_product_validate_price_null() -> None:
     """Проверяет вызов исключения при добавлении товара с ценой 0"""
-    with pytest.raises(ValueError, match="Цена должна быть положительной"):
+    with pytest.raises(ProductPriceError, match="Цена должна быть положительной"):
         Product("Samsung Galaxy S23 Ultra",
                 "256GB, Серый цвет, 200MP камера",
                 0,
@@ -27,7 +28,7 @@ def test_product_validate_price_null() -> None:
 
 def test_product_validate_price_negative() -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательной ценой"""
-    with pytest.raises(ValueError, match="Цена должна быть положительной"):
+    with pytest.raises(ProductPriceError, match="Цена должна быть положительной"):
         Product("Samsung Galaxy S23 Ultra",
                 "256GB, Серый цвет, 200MP камера",
                 -180000,
