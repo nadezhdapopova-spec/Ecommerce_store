@@ -53,7 +53,7 @@ class Product(BaseProduct, InfoClassMixin):
            Иначе обновляет информацию о товаре (цена, количество)"""
         required_keys = {"name", "description", "price", "quantity"}
         if not required_keys.issubset(kwargs):
-            raise KeyError("Отсутствуют необходимые данные товара")
+            raise KeyError("Отсутствуют необходимые параметры товара")
 
         if product_list:
             for product in product_list:
@@ -112,6 +112,13 @@ class Category(BaseCatalogObject, InfoClassMixin):
             raise TypeError(f"Товар {product} не является объектом Product")
         self.__products.append(product)
         Category.product_count += 1
+
+    def middle_price(self) -> int | float:
+        """Вычисляет среднюю цену всех товаров категории"""
+        try:
+            return round(sum([prod.price for prod in self.products_list]) / len(self.products_list), 2)
+        except ZeroDivisionError:
+            return 0
 
     @classmethod
     def clear_context(cls) -> None:

@@ -42,8 +42,8 @@ class BaseProduct(ABC):
     @staticmethod
     def validate_quantity(quantity: int) -> int:
         """Проверяет, что количество товара не менее 0"""
-        if quantity < 0:
-            raise ValueError("Количество не может быть отрицательным")
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым или отрицательным количеством не может быть добавлен")
         return quantity
 
 
