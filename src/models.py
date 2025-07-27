@@ -162,10 +162,8 @@ class Order(BaseCatalogObject):
 
     def get_total_price(self) -> int | float:
         """Возвращает общую стоимость товара"""
-        if self.quantity:
-            return self.__product.price * float(self.quantity)
-        else:
-            return 0
+        return self.__product.price * float(self.quantity)
+
 
     @staticmethod
     def validate_product(product: Product) -> Product:
