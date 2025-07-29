@@ -53,10 +53,25 @@ def test_add_product(product_1: Product) -> None:
     assert product_str in category.products
 
 
-def test_add_product_invalid(category_1: Any) -> None:
+def test_add_product_invalid(capsys: Any, category_1: Any) -> None:
     """Проверяет вызов исключения при добавлении в категорию товара, не являющегося объектом Product"""
-    with pytest.raises(TypeError):
-        category_1.add_product("не является товаром")
+    result = category_1.add_product("не является товаром")
+    assert result is None
+
+    message = capsys.readouterr()
+    assert (message.out.strip().split("\n")[-2] ==
+            "Товар не добавлен. Товар 'не является товаром' не является объектом Product")
+    assert (message.out.strip().split("\n")[-1] == "Обработка добавления товара завершена")
+
+
+def test_middle_price(category_1: Category) -> None:
+    """Проверяет вычисление средней стоимости товаров в категории"""
+    assert category_1.middle_price() == 105500.0
+
+
+def test_middle_price_not_products(category_3: Category) -> None:
+    """Проверяет вычисление средней стоимости, если товары в категории отсутствуют"""
+    assert category_3.middle_price() == 0
 
 
 def test_products_iteration(products_iterator: Any) -> None:

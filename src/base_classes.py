@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+from src.exceptions import ProductPriceError
+
 
 class BaseProduct(ABC):
 
@@ -36,14 +38,14 @@ class BaseProduct(ABC):
     def validate_price(price: int | float) -> int | float:
         """Проверяет, что цена товара больше 0"""
         if price <= 0:
-            raise ValueError("Цена должна быть положительной")
+            raise ProductPriceError("Цена должна быть положительной")
         return price
 
     @staticmethod
     def validate_quantity(quantity: int) -> int:
         """Проверяет, что количество товара не менее 0"""
-        if quantity < 0:
-            raise ValueError("Количество не может быть отрицательным")
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым или отрицательным количеством не может быть добавлен")
         return quantity
 
 

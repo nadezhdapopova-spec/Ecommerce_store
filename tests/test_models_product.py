@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
+from src.exceptions import ProductPriceError
 from src.models import Category, Product
 
 
@@ -18,7 +19,7 @@ def test_product_init(product_1: Product, product_2: Product) -> None:
 
 def test_product_validate_price_null() -> None:
     """Проверяет вызов исключения при добавлении товара с ценой 0"""
-    with pytest.raises(ValueError):
+    with pytest.raises(ProductPriceError, match="Цена должна быть положительной"):
         Product("Samsung Galaxy S23 Ultra",
                 "256GB, Серый цвет, 200MP камера",
                 0,
@@ -27,7 +28,7 @@ def test_product_validate_price_null() -> None:
 
 def test_product_validate_price_negative() -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательной ценой"""
-    with pytest.raises(ValueError):
+    with pytest.raises(ProductPriceError, match="Цена должна быть положительной"):
         Product("Samsung Galaxy S23 Ultra",
                 "256GB, Серый цвет, 200MP камера",
                 -180000,
@@ -36,11 +37,20 @@ def test_product_validate_price_negative() -> None:
 
 def test_product_validate_quantity_negative() -> None:
     """Проверяет вызов исключения при добавлении товара с отрицательным количеством"""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Товар с нулевым или отрицательным количеством не может быть добавлен"):
         Product("Samsung Galaxy S23 Ultra",
                 "256GB, Серый цвет, 200MP камера",
                 180000,
                 -5)
+
+
+def test_product_validate_quantity_null() -> None:
+    """Проверяет вызов исключения при добавлении товара с отрицательным количеством"""
+    with pytest.raises(ValueError, match="Товар с нулевым или отрицательным количеством не может быть добавлен"):
+        Product("Samsung Galaxy S23 Ultra",
+                "256GB, Серый цвет, 200MP камера",
+                180000,
+                0)
 
 
 def test_product_str(product_2: Product) -> None:
@@ -55,7 +65,9 @@ def test_product_add(product_1: Product, product_2: Product) -> None:
 
 def test_product_add_invalid(product_1: Product, category_1: Category) -> None:
     """Проверяет сложение стоимости товаров, один из которых не является объектом класса Product"""
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError,
+                       match="Товар Смартфоны, количество продуктов: 19 шт. " +
+                             "не является объектом <class 'src.models.Product'>"):
         _ = product_1 + category_1
 
 
@@ -80,7 +92,7 @@ def test_new_product_not_product_list(new_product_data: dict) -> None:
 
 def test_new_product_invalid_data(new_product_invalid_data: dict) -> None:
     """Проверяет вызов исключения при добавлении товара, если часть данных отсутствует"""
-    with pytest.raises(KeyError):
+    with pytest.raises(KeyError, match="Отсутствуют необходимые параметры товара"):
         Product.new_product(new_product_invalid_data)
 
 
@@ -126,5 +138,5 @@ def test_price_negative_number(new_product_data: dict, capsys: Any) -> None:
 
 def test_price_not_number(product_1: Any) -> None:
     """Проверяет попытку изменить цену товара на нечисловое значение"""
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="Цена не является числом"):
         product_1.price = "180000.0"

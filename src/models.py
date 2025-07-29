@@ -1,6 +1,7 @@
 from typing import Any, Optional
 
 from src.base_classes import BaseCatalogObject, BaseProduct
+from src.exceptions import ProductQuantityError
 from src.info_class_mixin import InfoClassMixin
 
 
@@ -38,7 +39,7 @@ class Product(BaseProduct, InfoClassMixin):
     def price(self, new_price: int | float) -> None:
         """Обновляет цену товара по условию"""
         if not isinstance(new_price, (int, float)):
-            raise TypeError("Цена не является числом.")
+            raise TypeError("Цена не является числом")
         if new_price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
@@ -53,7 +54,7 @@ class Product(BaseProduct, InfoClassMixin):
            Иначе обновляет информацию о товаре (цена, количество)"""
         required_keys = {"name", "description", "price", "quantity"}
         if not required_keys.issubset(kwargs):
-            raise KeyError("Отсутствуют необходимые данные товара")
+            raise KeyError("Отсутствуют необходимые параметры товара")
 
         if product_list:
             for product in product_list:
@@ -108,10 +109,23 @@ class Category(BaseCatalogObject, InfoClassMixin):
 
     def add_product(self, product: Product) -> None:
         """Добавляет новый товар в категорию"""
-        if not isinstance(product, Product):
-            raise TypeError(f"Товар {product} не является объектом Product")
-        self.__products.append(product)
-        Category.product_count += 1
+        try:
+            if not isinstance(product, Product):
+                raise TypeError(f"Товар '{product}' не является объектом Product")
+            self.__products.append(product)
+            Category.product_count += 1
+            print("Товар добавлен")
+        except TypeError as e:
+            print(f"Товар не добавлен. {str(e)}")
+        finally:
+            print("Обработка добавления товара завершена")
+
+    def middle_price(self) -> int | float:
+        """Вычисляет среднюю цену всех товаров категории"""
+        try:
+            return round(sum([prod.price for prod in self.products_list]) / len(self.products_list), 2)
+        except ZeroDivisionError:
+            return 0
 
     @classmethod
     def clear_context(cls) -> None:
@@ -120,21 +134,21 @@ class Category(BaseCatalogObject, InfoClassMixin):
         cls.product_count = 0
 
 
-class Order(BaseCatalogObject, InfoClassMixin):
+class Order(BaseCatalogObject):
     """Класс для создания заказа"""
     product: Product
-    count: int
+    quantity: int
 
-    def __init__(self, product: Product, count: int) -> None:
+    def __init__(self, product: Product, quantity: int) -> None:
         """Конструктор для заказа"""
         self.__product = Order.validate_product(product)
-        self.count = Order.validate_count(count, product)
+        self.quantity = Order.validate_quantity(quantity, product)
         self.__total_price = self.get_total_price()
         super().__init__()
 
     def __str__(self) -> str:
         """Возвращает строковое представление заказа для пользователя"""
-        return f"{self.__product.name}, количество: {self.count} шт., стоимость: {self.__total_price} руб."
+        return f"{self.__product.name}, количество: {self.quantity} шт., стоимость: {self.__total_price} руб."
 
     @property
     def product(self) -> str:
@@ -147,27 +161,32 @@ class Order(BaseCatalogObject, InfoClassMixin):
         return self.__total_price
 
     def get_total_price(self) -> int | float:
-        """Возвращает общую стоимость товара"""
-        return self.__product.price * self.count
+        """Считает общую стоимость заказа"""
+        return self.__product.price * float(self.quantity)
+
 
     @staticmethod
     def validate_product(product: Product) -> Product:
         """Проверяет, что товар является объектом класса Product"""
         if not isinstance(product, Product):
-            raise TypeError("Товар не является объектом класса Product")
+            raise TypeError(f"Товар '{product}' не является объектом класса Product")
         return product
 
     @staticmethod
-    def validate_count(count: int, product: Product) -> int:
+    def validate_quantity(quantity: int, product: Product) -> int:
         """Проверяет, что количество товара целое число больше 0.
            Проверяет, что количества товаров хватает в магазине"""
-        if type(count) is not int:
-            raise TypeError("Количество товара должно быть целым числом")
-        if count <= 0:
-            raise ValueError("Количество товара не может быть отрицательным или равным нулю")
-        if count > product.quantity:
-            raise ValueError(f"Количество товара в магазине: {product.quantity}")
-        return count
+        try:
+            if type(quantity) is not int:
+                raise TypeError("Количество товара должно быть целым числом")
+            if quantity <= 0:
+                raise ProductQuantityError("Количество товара не может быть отрицательным или равным нулю")
+            if quantity > product.quantity:
+                raise ProductQuantityError(f"Количество товара в магазине: {product.quantity}")
+            print("Товар добавлен")
+            return quantity
+        finally:
+            print("Обработка добавления товара завершена")
 
 
 class ProductsIterator:

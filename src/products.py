@@ -31,7 +31,7 @@ class Smartphone(Product):
         if type(other) is Smartphone:
             return self.price * self.quantity + other.price * other.quantity
 
-        raise TypeError
+        raise TypeError(f"Товар '{other.name}' не является объектом {self.__class__}")
 
 
 class LawnGrass(Product):
@@ -59,4 +59,4 @@ class LawnGrass(Product):
         if type(other) is LawnGrass:
             return self.price * self.quantity + other.price * other.quantity
 
-        raise TypeError
+        raise TypeError(f"Товар '{other.name}' не является объектом {self.__class__}")

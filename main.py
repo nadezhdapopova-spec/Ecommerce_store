@@ -1,3 +1,4 @@
+
 from src.models import Category, Order, Product, ProductsIterator
 from src.products import LawnGrass, Smartphone
 
@@ -22,8 +23,8 @@ if __name__ == "__main__":
     print(f"{product3.quantity}\n")
 
     category1 = Category("Смартфоны",
-                         """Смартфоны, как средство не только коммуникации,
-                          но и получения дополнительных функций для удобства жизни""",
+                         "Смартфоны, как средство не только коммуникации, " +
+                         "но и получения дополнительных функций для удобства жизни",
                          [product1, product2, product3])
 
     print(category1.name == "Смартфоны")
@@ -34,8 +35,7 @@ if __name__ == "__main__":
 
     product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
     category2 = Category("Телевизоры",
-                         """Современный телевизор, который позволяет наслаждаться просмотром,
-                          станет вашим другом и помощником""",
+                         """Современный телевизор, который станет вашим другом и помощником""",
                          [product4])
 
     print(category2.name)
@@ -46,21 +46,36 @@ if __name__ == "__main__":
     print(Category.category_count)
     print(Category.product_count)
 
-    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    product1 = Product("Samsung Galaxy S23 Ultra",
+                       "256GB, Серый цвет, 200MP камера",
+                       180000.0,
+                       5)
     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
 
     category1 = Category(
         "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+        "Смартфоны, как средство получения дополнительных функций для удобства жизни",
         [product1, product2, product3]
     )
 
     print(category1.products)
-    product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
+    product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 5)
     category1.add_product(product4)
     print(category1.products)
     print(category1.product_count)
+
+    try:
+        product_null_quantity = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 0)
+        category1.add_product(product_null_quantity)
+        print(category1.products)
+        print(category1.product_count)
+    except ValueError as e:
+        print(
+            f"Возникла ошибка прерывающая работу программы "
+            f"при попытке добавить продукт с нулевым количеством: {e}")
+    else:
+        print("Не возникла ошибка ValueError при попытке добавить продукт с нулевым количеством")
 
     new_product = Product.new_product(
         {"name": "Samsung Galaxy S23 Ultra", "description": "256GB, Серый цвет, 200MP камера", "price": 180000.0,
@@ -112,8 +127,7 @@ if __name__ == "__main__":
 
     category1 = Category(
         "Смартфоны",
-        """Смартфоны, как средство не только коммуникации,
-        но и получения дополнительных функций для удобства жизни""",
+        "Смартфоны, как средство получения дополнительных функций для удобства жизни",
         [product1, product2, product3]
     )
 
@@ -218,12 +232,7 @@ if __name__ == "__main__":
 
     print(Category.product_count)
 
-    try:
-        category_smartphones.add_product("Not a product")
-    except TypeError:
-        print("Возникла ошибка TypeError при добавлении не продукта")
-    else:
-        print("Не возникла ошибка TypeError при добавлении не продукта")
+    category_smartphones.add_product("Not a product")
 
     product1 = Product(
         "Samsung Galaxy S23 Ultra",
@@ -257,8 +266,7 @@ if __name__ == "__main__":
     print(product3.quantity)
 
     category1 = Category("Смартфоны",
-                         """Смартфоны, как средство не только коммуникации,
-                         но и получения дополнительных функций для удобства жизни""",
+                         "Смартфоны, как средство получения дополнительных функций для удобства жизни",
                          [product1, product2, product3])
 
     print(category1.name == "Смартфоны")
@@ -269,8 +277,7 @@ if __name__ == "__main__":
 
     product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
     category2 = Category("Телевизоры",
-                         """Современный телевизор, который позволяет наслаждаться просмотром,
-                         станет вашим другом и помощником""",
+                         "Современный телевизор, который станет вашим другом и помощником",
                          [product4])
 
     print(category2.name)
@@ -289,5 +296,39 @@ if __name__ == "__main__":
                    2)
 
     print(order1.product)
-    print(order1.count)
+    print(order1.quantity)
     print(order1.total_price)
+
+    try:
+        product_invalid = Product("Бракованный товар",
+                                  "Неверное количество",
+                                  1000.0, 0)
+    except ValueError as e:
+        print(
+            f"Возникла ошибка прерывающая работу программы "
+            f"при попытке добавить продукт с нулевым количеством: {e}")
+    else:
+        print("Не возникла ошибка ValueError при попытке добавить продукт с нулевым количеством")
+
+    product1 = Product("Samsung Galaxy S23 Ultra",
+                       "256GB, Серый цвет, 200MP камера",
+                       180000.0, 5)
+    product2 = Product("Iphone 15",
+                       "512GB, Gray space",
+                       210000.0,
+                       8)
+    product3 = Product("Xiaomi Redmi Note 11",
+                       "1024GB, Синий",
+                       31000.0,
+                       14)
+
+    category1 = Category("Смартфоны",
+                         "Категория смартфонов",
+                         [product1, product2, product3])
+
+    print(category1.middle_price())
+
+    category_empty = Category("Пустая категория",
+                              "Категория без продуктов",
+                              [])
+    print(category_empty.middle_price())
