@@ -161,7 +161,7 @@ class Order(BaseCatalogObject):
         return self.__total_price
 
     def get_total_price(self) -> int | float:
-        """Возвращает общую стоимость товара"""
+        """Считает общую стоимость заказа"""
         return self.__product.price * float(self.quantity)
 
 
