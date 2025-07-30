@@ -12,7 +12,7 @@ class BaseProduct(ABC):
         pass
 
     @abstractmethod
-    def __add__(self, *args: Any, **kwargs: Any) -> Any:
+    def __add__(self, other: Any) -> Any:
         """Возвращает сумму указанных товаров"""
         pass
 

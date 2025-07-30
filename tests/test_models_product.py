@@ -66,8 +66,7 @@ def test_product_add(product_1: Product, product_2: Product) -> None:
 def test_product_add_invalid(product_1: Product, category_1: Category) -> None:
     """Проверяет сложение стоимости товаров, один из которых не является объектом класса Product"""
     with pytest.raises(TypeError,
-                       match="Товар Смартфоны, количество продуктов: 19 шт. " +
-                             "не является объектом <class 'src.models.Product'>"):
+                       match="Товар 'Смартфоны, количество продуктов: 19 шт.' не является объектом Product"):
         _ = product_1 + category_1
 
 

@@ -27,7 +27,7 @@ class Product(BaseProduct, InfoClassMixin):
     def __add__(self, other: Any) -> Any:
         """Возвращает сумму полной стоимости указанных товаров на складе"""
         if not isinstance(other, self.__class__):
-            raise TypeError(f"Товар {other} не является объектом {self.__class__}")
+            raise TypeError(f"Товар '{other}' не является объектом {self.__class__.__name__}")
         return self.price * self.quantity + other.price * other.quantity
 
     @property
@@ -182,7 +182,7 @@ class Order(BaseCatalogObject):
             if quantity <= 0:
                 raise ProductQuantityError("Количество товара не может быть отрицательным или равным нулю")
             if quantity > product.quantity:
-                raise ProductQuantityError(f"Количество товара в магазине: {product.quantity}")
+                raise ProductQuantityError(f"Товар не добавлен. Количество товара в магазине: {product.quantity}")
             print("Товар добавлен")
             return quantity
         finally:

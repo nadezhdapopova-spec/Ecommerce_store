@@ -23,8 +23,7 @@ def test_smartphone_product_add(smartphone_product_1: Smartphone, smartphone_pro
 
 def test_smartphone_product_add_invalid(smartphone_product_1: Smartphone, lawn_qrass_product_1: LawnGrass) -> None:
     """Проверяет сложение стоимости товаров, являющихся объектами разных классов"""
-    with pytest.raises(TypeError, match="Товар 'Газонная трава' " +
-                                        "не является объектом <class 'src.products.Smartphone'>"):
+    with pytest.raises(TypeError, match="Товар 'Газонная трава' не является объектом Smartphone"):
         _ = smartphone_product_1 + lawn_qrass_product_1
 
 
@@ -47,6 +46,5 @@ def test_lawn_qrass_product_add(lawn_qrass_product_1: LawnGrass, lawn_qrass_prod
 
 def test_lawn_qrass_product_add_invalid(lawn_qrass_product_1: LawnGrass, smartphone_product_1: Smartphone) -> None:
     """Проверяет сложение стоимости товаров, являющихся объектами разных классов"""
-    with pytest.raises(TypeError, match="Товар 'Xiaomi Redmi Note 11' " +
-                                        "не является объектом <class 'src.products.LawnGrass'>"):
+    with pytest.raises(TypeError, match="Товар 'Xiaomi Redmi Note 11' не является объектом LawnGrass"):
         _ = lawn_qrass_product_1 + smartphone_product_1
