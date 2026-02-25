@@ -1,10 +1,11 @@
 [project]
 name = "ecommerce-store"
 version = "0.1.0"
-description = "Project for creating an online store"
+description = "Object-oriented model of an online store catalog"
 authors = [
     {name = "Nadezhda_Popova",email = "nadezhdapopova13@yandex.ru"}
 ]
+
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -55,3 +56,6 @@ multi_line_output = 3
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
 pytest-cov = "^6.2.1"
+
+[tool.poetry]
+package-mode = false
